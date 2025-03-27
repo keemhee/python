@@ -2,7 +2,7 @@ import serial
 import time
 
 # 시리얼 포트 설정
-ser = serial.Serial('COM3', 9600)  # 'COM3' 대신 사용 중인 포트로 변경
+ser = serial.Serial('COM3', 9600)  # 사용 중인 포트
 time.sleep(2)  # 아두이노가 리셋될 시간을 줌
 
 def send_angle(angle1):
