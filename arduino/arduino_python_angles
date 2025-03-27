@@ -1,0 +1,33 @@
+import serial
+import time
+
+# 시리얼 포트 설정
+ser = serial.Serial('COM3', 9600)  # 'COM3' 대신 사용 중인 포트로 변경
+time.sleep(2)  # 아두이노가 리셋될 시간을 줌
+
+def send_angle(angle1):
+    """
+    아두이노로 각도 값을 전송하는 함수
+    """
+    angle_str = f"{angle1}\n"
+    ser.write(angle_str.encode())  # 문자열을 바이트로 인코딩하여 전송
+    print(f"Sent angle: {angle1}")
+
+try:
+    while True:
+        # 사용자가 입력한 각도 값을 읽음
+        angle1 = int(input("Enter angle for servo1 (0-180): "))
+        
+        # 각도를 아두이노로 전송
+        send_angle(angle1)
+        
+        # 아두이노의 응답을 읽음
+        if ser.in_waiting > 0:
+            response = ser.readline().decode().strip()
+            print(f"Arduino response: {response}")
+
+except KeyboardInterrupt:
+    print("Program terminated")
+
+finally:
+    ser.close()  # 시리얼 포트를 닫음
